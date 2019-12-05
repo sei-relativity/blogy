@@ -38,6 +38,18 @@ router.get('/api/articles', (req, res) => {
  * URI:         /api/articles
  * Description: Create a new Article
 */
+router.post('/api/articles', (req, res) => {
+  Article.create(req.body.article)
+  // On a successful `create` action, respond with 201
+  // HTTP status and the content of the new article.
+  .then((newArticle) => {
+    res.status(201).json({ article: newArticle });
+  })
+  // Catch any errors that might occur
+  .catch((error) => {
+    res.status(500).json({ error: error });
+  });
+});
 
 /**
  * Action:      UPDATE
