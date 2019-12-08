@@ -31,6 +31,26 @@ router.get('/api/articles', (req, res) => {
 * URI:          /api/articles/5d664b8b68b4f5092aba18e9
 * Description:  Get An Article by Article ID
 */
+router.get('/api/articles/:id', function(req, res) {
+  Article.findById(req.params.id)
+    .then(function(article) {
+      if(article) {
+        res.status(200).json({ article: article });
+      } else {
+        // If we couldn't find a document with the matching ID
+        res.status(404).json({
+          error: {
+            name: 'DocumentNotFoundError',
+            message: 'The provided ID doesn\'t match any documents'
+          }
+        });
+      }
+    })
+    // Catch any errors that might occur
+    .catch(function(error) {
+      res.status(500).json({ error: error });
+    });
+});
 
 /**
  * Action:      CREATE
